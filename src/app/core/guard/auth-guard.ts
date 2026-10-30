@@ -1,0 +1,15 @@
+// auth-guard.ts
+import { inject, PLATFORM_ID } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+
+export const authGuard: CanActivateFn = (route, state) => {
+  const _Router = inject(Router);
+  const _PlatformId = inject(PLATFORM_ID);
+
+  if (isPlatformBrowser(_PlatformId) && localStorage.getItem("SocialToken")) {
+    return true;
+  } else {
+    return _Router.parseUrl("auth/login");
+  }
+};

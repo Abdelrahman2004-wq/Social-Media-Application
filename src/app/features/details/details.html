@@ -1,0 +1,254 @@
+<section class="col-start-3 col-end-10 bg-white rounded-2xl shadow-sm overflow-hidden">
+  @if (postData(); as post) {
+    <div class="p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full">
+          <img [src]="post.user.photo" class="w-10 h-10 rounded-full" [alt]="post.user.name" />
+        </div>
+        <div>
+          <p class="font-semibold text-sm">{{ post.user.name }}</p>
+          <div class="text-xs text-gray-500 flex gap-2">
+            <span>{{ post.createdAt }}</span>
+            <span>·</span>
+            <div
+              class="p-0 w-fit items-center bg-neutral-secondary-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+            >
+              <select
+                [disabled]="post.user._id !== userID()"
+                class="border-none bg-white cursor-pointer ring-0 py-0 px-2 text-xs"
+              >
+                <option [selected]="post.privacy == 'public'" value="public">public</option>
+                <option [selected]="post.privacy == 'following'" value="following">
+                  followers
+                </option>
+                <option [selected]="post.privacy == 'only_me'" value="only_me">only me</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button
+          type="button"
+          class="flex text-sm bg-neutral-primary rounded-full md:me-0 focus:ring-4 focus:ring-neutral-tertiary"
+          [id]="'user-menu-button-' + post.id"
+          aria-expanded="false"
+          [attr.data-dropdown-toggle]="'post-options-dropdown-' + post.id"
+          data-dropdown-placement="bottom"
+        >
+          <span class="sr-only">Open user menu</span>
+          <i class="fa-solid cursor-pointer fa-ellipsis p-0.5 text-gray-400"></i>
+        </button>
+        <!-- Dropdown menu -->
+        <div
+          class="z-50 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44"
+          [id]="'post-options-dropdown-' + post.id"
+        >
+          <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownMenuIconButton">
+            <li>
+              @if (post.user._id === userID()) {
+                <button
+                  class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                >
+                  Edit post
+                </button>
+
+                <button
+                  
+                  class="inline-flex text-red-700 items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                >
+                  Delete post
+                </button>
+              } @else {
+                <button
+                  class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                >
+                  Save Post
+                </button>
+              }
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4">
+      <p class="my-2">{{ post.body }}</p>
+      @if (post.image) {
+        <img [src]="post.image" class="rounded-lg w-full" [alt]="post.body" />
+      }
+    </div>
+
+    <!-- Number of likes , shares , comments -->
+    <div class="px-4 pb-2 pt-3 text-sm text-slate-500">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+          <span
+            class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#1877f2] text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-thumbs-up"
+              aria-hidden="true"
+            >
+              <path
+                d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
+              ></path>
+              <path d="M7 10v12"></path>
+            </svg> </span
+          ><button type="button" class="font-semibold transition cursor-default">
+            {{ post.likesCount }} likes
+          </button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs sm:gap-3 sm:text-sm">
+          <span class="inline-flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-repeat2 lucide-repeat-2"
+              aria-hidden="true"
+            >
+              <path d="m2 9 3-3 3 3"></path>
+              <path d="M13 18H7a2 2 0 0 1-2-2V6"></path>
+              <path d="m22 15-3 3-3-3"></path>
+              <path d="M11 6h6a2 2 0 0 1 2 2v10"></path></svg
+            >{{ post.sharesCount }} shares</span
+          ><span>{{ post.commentsCount }} comments</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-4 border-t border-slate-200"></div>
+
+    <div class="px-4 py-2 flex justify-around text-gray-600 text-sm">
+      <button class="cursor-pointer flex items-center gap-2 hover:text-blue-600">
+        <i class="fa-regular fa-thumbs-up"></i>
+        Like
+      </button>
+      <button class="cursor-pointer flex items-center gap-2 hover:text-blue-600" #comment>
+        <i class="fa-regular fa-comment"></i>
+        Comment
+      </button>
+      <button class="cursor-pointer flex items-center gap-2 hover:text-blue-600">
+        <i class="fa-solid fa-share"></i>
+        Share
+      </button>
+    </div>
+
+    <div class="p-4">
+      <div>
+        <div class="flex items-start gap-2">
+          <img
+            alt=""
+            class="h-9 w-9 rounded-full object-cover"
+            src="/images/default-profile.png"
+          />
+          <div
+            class="w-full rounded-2xl border border-slate-200 bg-second px-2.5 py-1.5 focus-within:border-[#c7dafc] focus-within:bg-white"
+            data-comment-mention-root="true"
+          >
+            <textarea
+              placeholder="Write a comment..."
+              rows="1"
+              class="max-h-35 min-h-10 w-full border-none resize-none bg-transparent px-2 py-1.5 text-sm leading-5 outline-none placeholder:text-slate-500"
+              style="height: 40px"
+            ></textarea>
+            <div class="mt-1 flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <label
+                  class="inline-flex cursor-pointer items-center justify-center rounded-full p-2 text-slate-500 transition hover:bg-slate-200 hover:text-emerald-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-image"
+                    aria-hidden="true"
+                  >
+                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                    <circle cx="9" cy="9" r="2"></circle>
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+                  </svg>
+                  <input accept="image/*" class="hidden" type="file" />
+                </label>
+                <button
+                  type="button"
+                  class="inline-flex items-center justify-center rounded-full p-2 text-slate-500 transition hover:bg-slate-200 hover:text-amber-500"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-smile"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                    <line x1="9" x2="9.01" y1="9" y2="9"></line>
+                    <line x1="15" x2="15.01" y1="9" y2="9"></line>
+                  </svg>
+                </button>
+              </div>
+              <button
+                class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#1877f2] text-white shadow-sm transition hover:bg-[#166fe5] disabled:cursor-not-allowed disabled:bg-[#9ec5ff] disabled:opacity-100"
+                disabled
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-send-horizontal"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z"
+                  ></path>
+                  <path d="M6 12h16"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Comments - تظهر مباشرة في صفحة التفاصيل، من غير انتظار تفاعل -->
+    <app-comment [postId]="post.id"></app-comment>
+  } @else {
+    <div class="p-8 text-center text-slate-500">Loading post...</div>
+  }
+</section>

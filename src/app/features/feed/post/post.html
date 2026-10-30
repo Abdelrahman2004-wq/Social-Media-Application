@@ -1,0 +1,237 @@
+<section class="col-start-3 col-end-10 bg-white rounded-2xl shadow-sm overflow-hidden">
+  <!-----------------------------------------------Create Post--------------------------------------------------->
+  <form
+    #myElement
+    (submit)="submitForm($event, myElement)"
+    class="w-full bg-white rounded-[16px] shadow-sm border border-slate-200 p-4 font-sans flex flex-col"
+  >
+    <div class="flex items-center gap-3 mb-3">
+      <img
+        src="assets/default-profile.png"
+        alt="Abdelrahman"
+        class="w-10 h-10 rounded-full object-cover shrink-0 bg-slate-100 border border-slate-50"
+      />
+
+      <div>
+        <span class="text-[15px] font-bold text-slate-900 leading-tight">Abdelrahman</span>
+
+        <div
+          class="flex p-1 w-fit items-center bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+        >
+          <i class="fa-solid fa-earth-americas text-[11px] text-slate-600"></i>
+
+          <select
+            [formControl]="privacy"
+            class="border-none bg-transparent cursor-pointer ring-0 py-0 px-2 text-xs"
+          >
+            <option value="public">public</option>
+            <option value="following">followers</option>
+            <option value="only_me">only me</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <textarea
+        [formControl]="content"
+        class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-[15px] text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-300 transition-all resize-y min-h-30"
+        placeholder="What's on your mind...?"
+        aria-label="Create a new post"
+      ></textarea>
+    </div>
+
+    <hr class="border-t border-slate-800 mb-4" />
+
+    <div class="flex items-center justify-between">
+      <input type="file" (change)="imageFolder($event)" id="file" class="hidden" />
+      <label
+        for="file"
+        class="flex cursor-pointer items-center gap-2 text-slate-600 hover:bg-slate-50 px-2 py-1.5 rounded-lg transition-colors group"
+      >
+        <i
+          class="fa-regular fa-image text-[#22c55e] text-[1.1rem] group-hover:scale-110 transition-transform"
+        ></i>
+        <span class="text-[14px] font-semibold text-slate-600">Photo/video</span>
+      </label>
+
+      <button
+        class="cursor-pointer bg-blue-500 text-white px-5 py-2 rounded-lg font-bold text-[14px] flex items-center gap-2 focus:ring-4 focus:ring-blue-200 outline-none"
+      >
+        Post
+        <i class="fa-regular fa-paper-plane text-sm"></i>
+      </button>
+    </div>
+    @if (imageSrc()) {
+      <img [src]="imageSrc()" class="h-[200px] mt-4" alt="" />
+    }
+  </form>
+
+  <!--------------------------------------------------Posts------------------------------------------>
+  @for (post of allPosts(); track post.id) {
+    <div class="p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full">
+          <img [src]="post.user.photo" class="w-10 h-10 rounded-full" [alt]="post.user.name" />
+        </div>
+        <div>
+          <p class="font-semibold text-sm">{{ post.user.name }}</p>
+          <div class="text-xs text-gray-500 flex gap-2">
+            <span>{{ post.createdAt }}</span>
+            <span>·</span>
+            <div
+              class="p-0 w-fit items-center bg-neutral-secondary-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+            >
+              <select
+                [disabled]="post.user._id !== userID()"
+                class="border-none bg-white cursor-pointer ring-0 py-0 px-2 text-xs"
+              >
+                <option [selected]="post.privacy == 'public'" value="public">public</option>
+                <option [selected]="post.privacy == 'following'" value="following">
+                  followers
+                </option>
+                <option [selected]="post.privacy == 'only_me'" value="only_me">only me</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button
+          type="button"
+          class="flex text-sm bg-neutral-primary rounded-full md:me-0 focus:ring-4 focus:ring-neutral-tertiary"
+          [id]="'user-menu-button-' + post.id"
+          aria-expanded="false"
+          [attr.data-dropdown-toggle]="'post-options-dropdown-' + post.id"
+          data-dropdown-placement="bottom"
+        >
+          <span class="sr-only">Open user menu</span>
+          <i class="fa-solid cursor-pointer fa-ellipsis p-0.5 text-gray-400"></i>
+        </button>
+        <!-- Dropdown menu -->
+        <div
+          class="z-50 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44"
+          [id]="'post-options-dropdown-' + post.id"
+        >
+          <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownMenuIconButton">
+            <li>
+              @if (post.user._id === userID()) {
+                <button
+                  class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                >
+                  Edit post
+                </button>
+
+                <button
+                  (click)="deleteItem(post.id)"
+                  class="inline-flex text-red-700 items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+                >
+                  Delete post
+                </button>
+              }
+              @else {
+              <button
+                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+              >
+                Save Post
+              </button>
+                    }
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4">
+      <p class="my-2">{{ post.body }}</p>
+      @if (post.image) {
+        <img [src]="post.image" class="rounded-lg w-full" [alt]="post.body" />
+      }
+    </div>
+
+    <!-- Number of likes , shares , comments and view Details -->
+    <div class="px-4 pb-2 pt-3 text-sm text-slate-500">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+          <span
+            class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#1877f2] text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-thumbs-up"
+              aria-hidden="true"
+            >
+              <path
+                d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
+              ></path>
+              <path d="M7 10v12"></path>
+            </svg> </span
+          ><button type="button" class="font-semibold transition cursor-default">
+            {{ post.likesCount }} likes
+          </button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs sm:gap-3 sm:text-sm">
+          <span class="inline-flex items-center gap-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-repeat2 lucide-repeat-2"
+              aria-hidden="true"
+            >
+              <path d="m2 9 3-3 3 3"></path>
+              <path d="M13 18H7a2 2 0 0 1-2-2V6"></path>
+              <path d="m22 15-3 3-3-3"></path>
+              <path d="M11 6h6a2 2 0 0 1 2 2v10"></path></svg
+            >{{ post.sharesCount }} shares</span
+          ><span>{{ post.commentsCount }} comments</span
+          ><button
+          [routerLink]="['/app/details', post.id]"
+            class="rounded-md px-2 py-1 cursor-pointer text-xs font-bold text-[#1877f2] hover:bg-[#e7f3ff]"
+          >
+            View details
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-4 border-t border-slate-200"></div>
+
+    <div class="px-4 py-2 flex justify-around text-gray-600 text-sm">
+      <button class="cursor-pointer flex items-center gap-2 hover:text-blue-600">
+        <i class="fa-regular fa-thumbs-up"></i>
+        Like
+      </button>
+      <button class="cursor-pointer flex items-center gap-2 hover:text-blue-600" #comment>
+        <i class="fa-regular fa-comment"></i>
+        Comment
+      </button>
+      <button class="cursor-pointer flex items-center gap-2 hover:text-blue-600">
+        <i class="fa-solid fa-share"></i>
+        Share
+      </button>
+    </div>
+
+
+
+
+    <!--Comment-->
+    @defer (on interaction(comment)) {
+  <app-comment [postId]="post.id"></app-comment>}
+  }
+</section>

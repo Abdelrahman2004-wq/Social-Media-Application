@@ -1,0 +1,502 @@
+<!-------------------------------------------------Register Form-------------------------------------------->
+<h2 class="text-2xl font-extrabold text-slate-900">Create a new account</h2>
+<p class="mt-1 text-sm text-slate-500">It is quick and easy.</p>
+<form class="mt-5 space-y-3.5" [formGroup]="registerForm" (ngSubmit)="submitData()">
+  <!-----------------------------------------------Name------------------------------------------------->
+  <div>
+    <div class="relative">
+      <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-user"
+          aria-hidden="true"
+          data-darkreader-inline-stroke=""
+          style="--darkreader-inline-stroke: currentColor"
+        >
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle></svg></span
+      ><input
+        formControlName="name"
+        placeholder="Full name"
+        class="w-full rounded-xl border bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition focus:bg-white border-slate-200 focus:border-[#00298d]"
+        type="text"
+        name="name"
+      />
+    </div>
+  </div>
+  <!----------------------------------------Name Validation----------------------------------------->
+  @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+    <div class="flex p-4 mb-4 text-sm text-red-700 rounded-base bg-red-200" role="alert">
+      <svg
+        class="w-4 h-4 me-2 shrink-0"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+      <span class="sr-only">Success</span>
+      <div>
+        <span class="font-medium">Warning:</span>
+        <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+          @if (registerForm.get('name')?.hasError('required')) {
+            <li>Name is Required</li>
+          }
+          @if (registerForm.get('name')?.hasError('minlength')) {
+            <li>Name Must be at Least 3 Characters</li>
+          }
+          @if (registerForm.get('name')?.hasError('maxlength')) {
+            <li>Maximum Characters are 20</li>
+          }
+          @if (registerForm.get('name')?.hasError('pattern')) {
+            <li>The Pattern is Alphabet Only</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+
+  <!-----------------------------------------------User Name------------------------------------------------->
+  <div>
+    <div class="relative">
+      <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-at-sign"
+          aria-hidden="true"
+          data-darkreader-inline-stroke=""
+          style="--darkreader-inline-stroke: currentColor"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg></span
+      ><input
+        formControlName="username"
+        placeholder="Username (optional)"
+        class="w-full rounded-xl border bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition focus:bg-white border-slate-200 focus:border-[#00298d]"
+        type="text"
+        name="username"
+      />
+    </div>
+  </div>
+
+  <!----------------------------------------UserName Validation------------------------------------->
+  @if (registerForm.get('username')?.invalid && registerForm.get('username')?.touched) {
+    <div class="flex p-4 mb-4 text-sm text-red-700 rounded-base bg-red-200" role="alert">
+      <svg
+        class="w-4 h-4 me-2 shrink-0"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+      <span class="sr-only">Success</span>
+      <div>
+        <span class="font-medium">Warning:</span>
+        <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+          @if (registerForm.get('username')?.hasError('minlength')) {
+            <li>Name Must be at Least 5 Characters</li>
+          }
+          @if (registerForm.get('username')?.hasError('maxlength')) {
+            <li>Maximum Characters are 20</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+
+  <!-----------------------------------------------Email------------------------------------------------->
+  <div>
+    <div class="relative">
+      <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-at-sign"
+          aria-hidden="true"
+          data-darkreader-inline-stroke=""
+          style="--darkreader-inline-stroke: currentColor"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg></span
+      ><input
+        formControlName="email"
+        placeholder="Email address"
+        class="w-full rounded-xl border bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition focus:bg-white border-slate-200 focus:border-[#00298d]"
+        type="email"
+        name="email"
+      />
+    </div>
+  </div>
+
+  <!----------------------------------------Email Validation---------------------------------------->
+  @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+    <div class="flex p-4 mb-4 text-sm text-red-700 rounded-base bg-red-200" role="alert">
+      <svg
+        class="w-4 h-4 me-2 shrink-0"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+      <span class="sr-only">Success</span>
+      <div>
+        <span class="font-medium">Warning:</span>
+        <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+          @if (registerForm.get('email')?.hasError('required')) {
+            <li>Email is Required</li>
+          }
+          @if (registerForm.get('email')?.hasError('email')) {
+            <li>Enter Vaild Email</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+
+  <!-----------------------------------------------Gender------------------------------------------------->
+  <div>
+    <div class="relative">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-users pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        aria-hidden="true"
+        data-darkreader-inline-stroke=""
+        style="--darkreader-inline-stroke: currentColor"
+      >
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+        <circle cx="9" cy="7" r="4"></circle></svg
+      ><select
+        formControlName="gender"
+        name="gender"
+        class="w-full rounded-xl border bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition focus:bg-white border-slate-200 focus:border-[#00298d]"
+      >
+        <option value="" hidden disabled selected>Select gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+  </div>
+
+  <!-------------------------------------Gender Validation------------------------------------------>
+  @if (registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched) {
+    <div class="flex p-4 mb-4 text-sm text-red-700 rounded-base bg-red-200" role="alert">
+      <svg
+        class="w-4 h-4 me-2 shrink-0"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+      <span class="sr-only">Success</span>
+      <div>
+        <span class="font-medium">Warning:</span>
+        <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+          @if (registerForm.get('gender')?.hasError('required')) {
+            <li>Gender is Required</li>
+          }
+          @if (registerForm.get('gender')?.hasError('pattern')) {
+            <li>Enter Vaild Gender</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+
+  <!-----------------------------------------------Date of Birth------------------------------------------------->
+  <div>
+    <div class="relative">
+      <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-calendar"
+          aria-hidden="true"
+          data-darkreader-inline-stroke=""
+          style="--darkreader-inline-stroke: currentColor"
+        >
+          <path d="M8 2v4"></path>
+          <path d="M16 2v4"></path>
+          <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+          <path d="M3 10h18"></path></svg></span
+      ><input
+        formControlName="dateOfBirth"
+        placeholder="Date of birth"
+        class="w-full rounded-xl border bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition focus:bg-white border-slate-200 focus:border-[#00298d]"
+        type="date"
+        name="dateOfBirth"
+      />
+    </div>
+  </div>
+
+  <!-------------------------------------Date of Birth Validation------------------------------------------>
+  @if (registerForm.get('dateOfBirth')?.invalid && registerForm.get('dateOfBirth')?.touched) {
+    <div class="flex p-4 mb-4 text-sm text-red-700 rounded-base bg-red-200" role="alert">
+      <svg
+        class="w-4 h-4 me-2 shrink-0"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+      <span class="sr-only">Success</span>
+      <div>
+        <span class="font-medium">Warning:</span>
+        <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+          @if (registerForm.get('dateOfBirth')?.hasError('required')) {
+            <li>Date of Birth is Required</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+
+  <!-----------------------------------------------Password------------------------------------------------->
+  <div>
+    <div class="relative">
+      <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-key-round"
+          aria-hidden="true"
+          data-darkreader-inline-stroke=""
+          style="--darkreader-inline-stroke: currentColor"
+        >
+          <path
+            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
+          ></path>
+          <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle></svg></span
+      ><input
+        formControlName="password"
+        placeholder="Password"
+        class="w-full rounded-xl border bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition focus:bg-white border-slate-200 focus:border-[#00298d]"
+        type="password"
+        name="password"
+      />
+    </div>
+  </div>
+
+  <!---------------------------------------Password Validation-------------------------------------->
+  @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+    <div class="flex p-4 mb-4 text-sm text-red-700 rounded-base bg-red-200" role="alert">
+      <svg
+        class="w-4 h-4 me-2 shrink-0"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+      <span class="sr-only">Success</span>
+      <div>
+        <span class="font-medium">Warning:</span>
+        <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+          @if (registerForm.get('password')?.hasError('required')) {
+            <li>password is Required</li>
+          }
+          @if (registerForm.get('password')?.hasError('pattern')) {
+            <li>
+              Enter Vaild password must 8 Characters 1 UpperCase 1 LowerCase at least 2 Numbers and
+              Special Characters
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+
+  <!-----------------------------------------------RePassword------------------------------------------------->
+  <div>
+    <div class="relative">
+      <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-key-round"
+          aria-hidden="true"
+          data-darkreader-inline-stroke=""
+          style="--darkreader-inline-stroke: currentColor"
+        >
+          <path
+            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
+          ></path>
+          <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle></svg></span
+      ><input
+        formControlName="rePassword"
+        placeholder="Confirm password"
+        class="w-full rounded-xl border bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition focus:bg-white border-slate-200 focus:border-[#00298d]"
+        type="password"
+        name="rePassword"
+      />
+    </div>
+  </div>
+
+  <!---------------------------------------RePassword Validation-------------------------------------->
+  @if (registerForm.get('rePassword')?.invalid && registerForm.get('rePassword')?.touched) {
+    <div class="flex p-4 mb-4 text-sm text-red-700 rounded-base bg-red-200" role="alert">
+      <svg
+        class="w-4 h-4 me-2 shrink-0"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+      <span class="sr-only">Success</span>
+      <div>
+        <span class="font-medium">Warning:</span>
+        <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+          @if (registerForm.get('rePassword')?.hasError('required')) {
+            <li>RePassword is Required</li>
+          }
+          @if (registerForm.get('rePassword')?.hasError('mismatch')) {
+            <li>RePassword doesn't Match</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+
+  <!-----------------------------------------------Submit------------------------------------------------->
+  <button
+    type="submit"
+    class="w-full cursor-pointer rounded-xl py-3 text-base font-extrabold text-white transition disabled:opacity-60 bg-[#00298d] hover:bg-[#001f6b]"
+  >
+    Create New Account
+      @if (loading) {
+        <i class="fa-solid fa-spinner fa-spin"></i>
+      }
+  </button>
+      <button
+      routerLink="/auth/login"
+    type="button"
+    class="mx-auto block text-sm font-semibold text-[#00298d] transition hover:underline"
+  >
+    I Already have Account
+  </button>
+
+  @if(errorMessages){
+  <span class="text-center border-2 rounded text-red-800 bg-red-400 p-2 mx-auto w-1/2" >{{errorMessages}}</span>
+  }
+</form>
